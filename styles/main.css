@@ -1,0 +1,222 @@
+:root {
+  color-scheme: dark;
+  --bg-gradient: radial-gradient(circle at top left, #3a1c71, #2f0743 35%, #090a0f 80%);
+  --card-gradient: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  --card-border: rgba(255, 255, 255, 0.2);
+  --card-hover: rgba(255, 255, 255, 0.35);
+  --accent: #ffb347;
+  --accent-strong: #ffcc33;
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --surface-blur: rgba(10, 12, 20, 0.65);
+  --transition-base: 200ms ease;
+  font-size: 16px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  font-family: 'Poppins', 'Segoe UI', Tahoma, sans-serif;
+  background-color: #060608;
+  color: var(--text-primary);
+  overflow-x: hidden;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.hub-background {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-gradient);
+  z-index: -2;
+}
+
+.hub-background::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(255, 72, 88, 0.25), rgba(45, 197, 253, 0.25));
+  mix-blend-mode: screen;
+  opacity: 0.9;
+}
+
+.hub-header {
+  padding: clamp(2rem, 4vw, 3.5rem) clamp(2.5rem, 6vw, 5rem);
+  text-align: left;
+  max-width: 1100px;
+}
+
+.hub-header h1 {
+  margin: 0;
+  font-size: clamp(2.8rem, 4vw, 4.5rem);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.hub-header p {
+  margin-top: 1rem;
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  color: var(--text-secondary);
+  max-width: 520px;
+}
+
+.hub-content {
+  padding: 0 clamp(2.5rem, 6vw, 6rem) clamp(3rem, 6vw, 5rem);
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.game-grid {
+  width: min(1200px, 100%);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.game-card {
+  position: relative;
+  background: var(--card-gradient);
+  border: 1px solid var(--card-border);
+  border-radius: 24px;
+  padding: 1.75rem 1.5rem 1.5rem;
+  backdrop-filter: blur(24px);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-height: 320px;
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  transition: transform var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+.game-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at 20% -20%, rgba(255, 255, 255, 0.2), transparent 55%);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+  pointer-events: none;
+}
+
+.game-card:hover {
+  transform: translateY(-12px) scale(1.01);
+  border-color: var(--card-hover);
+  box-shadow:
+    0 25px 55px rgba(0, 0, 0, 0.45),
+    0 0 30px rgba(255, 188, 45, 0.15);
+}
+
+.game-card:hover::before {
+  opacity: 1;
+}
+
+.game-card figure {
+  margin: 0;
+  flex: 1;
+  display: grid;
+  place-items: center;
+}
+
+.game-card img {
+  width: clamp(140px, 55%, 180px);
+  height: auto;
+  filter: drop-shadow(0 18px 32px rgba(0, 0, 0, 0.45));
+}
+
+.game-card h2 {
+  margin: 0;
+  font-size: clamp(1.4rem, 2vw, 1.75rem);
+  letter-spacing: 0.04em;
+}
+
+.game-card p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.game-card .actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.badge-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.pill {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.play-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 0.8rem 1.4rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(120deg, var(--accent), var(--accent-strong));
+  color: #1b1f2f;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow:
+    0 14px 30px rgba(255, 188, 45, 0.3),
+    inset 0 -4px 10px rgba(255, 255, 255, 0.2);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.play-button:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 18px 40px rgba(255, 188, 45, 0.35),
+    inset 0 -2px 8px rgba(255, 255, 255, 0.35);
+}
+
+.play-button span {
+  font-size: 0.8rem;
+}
+
+.play-button svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+@media (max-width: 900px) {
+  .hub-header {
+    padding-bottom: 1.5rem;
+  }
+
+  .game-card {
+    min-height: 280px;
+  }
+}

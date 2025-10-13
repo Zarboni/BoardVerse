@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chess Menu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../styles/menu.css" />
+    <script type="module" src="../../js/gameMenu.js" defer></script>
+  </head>
+  <body data-game-id="chess">
+    <div class="menu-shell" data-game-layout>
+      <a class="back-link" href="../../index.html">
+        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <path d="M10.5 3l-5 5 5 5 1.5-1.5L8.5 8l3.5-3.5L10.5 3z" />
+        </svg>
+        Back to hub
+      </a>
+
+      <header class="menu-header">
+        <h1 data-game-title>Chess</h1>
+        <div class="meta">
+          <p data-game-subtitle>Configure your match before entering the board.</p>
+          <span>Choose how you want to play, then start the game.</span>
+        </div>
+      </header>
+
+      <section class="menu-options">
+        <div class="option-group">
+          <label for="players">Players</label>
+          <div class="option-row" id="players" data-option-group="players"></div>
+        </div>
+
+        <div class="option-group">
+          <label for="difficulty">Difficulty</label>
+          <div class="option-row" id="difficulty" data-option-group="difficulty"></div>
+        </div>
+
+        <div class="option-group">
+          <label for="themes">Visual Theme</label>
+          <div class="option-row" id="themes" data-option-group="themes"></div>
+        </div>
+      </section>
+
+      <div class="menu-actions">
+        <div class="theme-preview">
+          <div class="theme-swatch" data-theme-swatch></div>
+          <span>Theme: <strong data-theme-label>Classic</strong></span>
+        </div>
+        <button class="start-button" data-start-button>Start Game</button>
+      </div>
+    </div>
+  </body>
+</html>

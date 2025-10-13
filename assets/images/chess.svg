@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+  <defs>
+    <linearGradient id="board" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8f9fb" />
+      <stop offset="100%" stop-color="#dfe4f5" />
+    </linearGradient>
+    <linearGradient id="piece" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#cfd4de" />
+    </linearGradient>
+  </defs>
+  <rect x="28" y="28" width="184" height="184" rx="18" fill="url(#board)" />
+  <g fill="#2b2f44" opacity="0.18">
+    <rect x="28" y="28" width="46" height="46" />
+    <rect x="120" y="28" width="46" height="46" />
+    <rect x="74" y="74" width="46" height="46" />
+    <rect x="166" y="74" width="46" height="46" />
+    <rect x="28" y="120" width="46" height="46" />
+    <rect x="120" y="120" width="46" height="46" />
+    <rect x="74" y="166" width="46" height="46" />
+    <rect x="166" y="166" width="46" height="46" />
+  </g>
+  <path
+    d="M120 68l-20 40h8l-8 18h48l-8-18h8z"
+    fill="#2f2f49"
+    opacity="0.85"
+  />
+  <path
+    d="M126 126h-12l-14 30h40z"
+    fill="#20223a"
+    opacity="0.9"
+  />
+  <path
+    d="M124 178h-16l-8 22h32z"
+    fill="url(#piece)"
+  />
+</svg>

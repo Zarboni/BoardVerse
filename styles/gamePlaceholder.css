@@ -1,0 +1,83 @@
+:root {
+  font-size: 16px;
+  --bg: radial-gradient(circle at 20% 20%, #282c34, #10121a 70%);
+  --panel: rgba(14, 18, 27, 0.8);
+  --panel-border: rgba(255, 255, 255, 0.08);
+  --text: rgba(255, 255, 255, 0.85);
+  --accent: #48d6ff;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  font-family: 'Poppins', 'Segoe UI', Tahoma, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+body {
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+}
+
+.placeholder-panel {
+  width: min(960px, 90vw);
+  padding: clamp(2rem, 5vw, 3.5rem);
+  border-radius: 28px;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  text-align: center;
+  backdrop-filter: blur(22px);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+}
+
+.placeholder-panel h1 {
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.placeholder-panel p {
+  margin-bottom: 2rem;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.placeholder-panel code {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+  background: rgba(72, 214, 255, 0.08);
+  border: 1px solid rgba(72, 214, 255, 0.35);
+  color: var(--accent);
+  font-size: 0.9rem;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 2rem;
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.back-link svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.back-link:hover {
+  color: var(--accent);
+}

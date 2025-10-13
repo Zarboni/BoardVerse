@@ -1,0 +1,206 @@
+:root {
+  --menu-bg: rgba(12, 14, 24, 0.75);
+  --menu-border: rgba(255, 255, 255, 0.18);
+  --menu-highlight: rgba(255, 197, 61, 0.4);
+  --menu-accent: #35c9ff;
+  --menu-secondary: rgba(255, 255, 255, 0.75);
+  --transition-fast: 160ms ease-in-out;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  font-family: 'Poppins', 'Segoe UI', Tahoma, sans-serif;
+  background: radial-gradient(circle at top, #16213e, #0f172a 60%, #05060f 100%);
+  color: #ffffff;
+}
+
+body {
+  padding: clamp(2rem, 5vw, 4rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu-shell {
+  width: min(960px, 92vw);
+  background: var(--menu-bg);
+  border: 1px solid var(--menu-border);
+  border-radius: 32px;
+  padding: clamp(2rem, 4vw, 3.5rem);
+  backdrop-filter: blur(30px);
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.45),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+.menu-header h1 {
+  margin: 0;
+  font-size: clamp(2.2rem, 4vw, 3rem);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.menu-header .meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 320px;
+  color: var(--menu-secondary);
+}
+
+.menu-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.option-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.option-group label {
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.option-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.menu-chip {
+  padding: 0.65rem 1.15rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--menu-secondary);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+}
+
+.menu-chip:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #ffffff;
+}
+
+.menu-chip[data-active='true'] {
+  background: linear-gradient(135deg, rgba(53, 201, 255, 0.3), rgba(53, 201, 255, 0.15));
+  border-color: var(--menu-highlight);
+  color: #ffffff;
+  box-shadow: 0 12px 25px rgba(53, 201, 255, 0.25);
+}
+
+.menu-actions {
+  margin-top: clamp(2rem, 4vw, 3rem);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.menu-actions .theme-preview {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--menu-secondary);
+  font-size: 0.9rem;
+}
+
+.theme-swatch {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+}
+
+.theme-swatch[data-theme='neon'] {
+  background: linear-gradient(135deg, #00f5ff, #5b2cff);
+}
+
+.theme-swatch[data-theme='retro'] {
+  background: linear-gradient(135deg, #ffaf00, #ff5f6d);
+}
+
+.start-button {
+  padding: 0.95rem 2.6rem;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(120deg, #ff9f1c, #ff6f91);
+  color: #1a1a1f;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow:
+    0 16px 40px rgba(255, 111, 145, 0.35),
+    inset 0 -4px 14px rgba(255, 255, 255, 0.3);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.start-button:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 22px 45px rgba(255, 111, 145, 0.4),
+    inset 0 -2px 12px rgba(255, 255, 255, 0.4);
+}
+
+.back-link {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+  text-decoration: none;
+  color: var(--menu-secondary);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: color var(--transition-fast);
+}
+
+.back-link svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.back-link:hover {
+  color: #ffffff;
+}
+
+@media (max-width: 640px) {
+  body {
+    padding: 1.75rem;
+  }
+
+  .menu-shell {
+    padding: 1.75rem;
+  }
+}

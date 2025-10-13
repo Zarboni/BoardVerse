@@ -1,0 +1,38 @@
+export const games = [
+  {
+    id: 'chess',
+    name: 'Chess',
+    tagline: 'Master strategy across the classic 64 squares.',
+    image: 'assets/images/chess.svg',
+    menuPage: 'games/chess/chessMenu.html',
+    playPage: 'chessGame.html',
+    badges: ['Strategy', '2 Players'],
+  },
+  {
+    id: 'checkers',
+    name: 'Checkers',
+    tagline: 'Fast-paced jumps and kings in a timeless duel.',
+    image: 'assets/images/checkers.svg',
+    menuPage: 'games/checkers/checkersMenu.html',
+    playPage: 'checkersGame.html',
+    badges: ['Casual', '2 Players'],
+  },
+  {
+    id: 'ludo',
+    name: 'Ludo',
+    tagline: 'Roll the dice and race your tokens home.',
+    image: 'assets/images/ludo.svg',
+    menuPage: 'games/ludo/ludoMenu.html',
+    playPage: 'ludoGame.html',
+    badges: ['Family', '4 Players'],
+  },
+  {
+    id: 'snakes',
+    name: 'Snakes & Ladders',
+    tagline: 'Climb high, avoid the bite, and reach 100 first.',
+    image: 'assets/images/snakes.svg',
+    menuPage: 'games/snakes/snakesMenu.html',
+    playPage: 'snakesGame.html',
+    badges: ['Luck', 'Casual'],
+  },
+];

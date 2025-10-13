@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chess Placeholder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../styles/gamePlaceholder.css" />
+    <script type="module" src="./chessGame.js" defer></script>
+  </head>
+  <body>
+    <div class="placeholder-panel" data-placeholder-panel>
+      <h1 data-placeholder-title>Chess</h1>
+      <p data-placeholder-description>
+        This interactive area will host the full chess experience. The configuration you chose is
+        summarised below.
+      </p>
+      <div data-placeholder-config></div>
+      <p>
+        Game logic loads from <code>games/chess/chessGame.js</code>. Replace this placeholder with
+        the full implementation when ready.
+      </p>
+      <a class="back-link" data-placeholder-return href="./chessMenu.html">
+        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <path d="M10.5 3l-5 5 5 5 1.5-1.5L8.5 8l3.5-3.5L10.5 3z" />
+        </svg>
+        Back to menu
+      </a>
+    </div>
+  </body>
+</html>

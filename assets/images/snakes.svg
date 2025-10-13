@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#6a82fb" />
+      <stop offset="100%" stop-color="#fc5c7d" />
+    </linearGradient>
+    <linearGradient id="snake" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2af598" />
+      <stop offset="100%" stop-color="#009efd" />
+    </linearGradient>
+    <linearGradient id="ladder" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffd452" />
+      <stop offset="100%" stop-color="#f3a847" />
+    </linearGradient>
+  </defs>
+  <rect x="28" y="28" width="184" height="184" rx="26" fill="url(#bg)" />
+  <path
+    d="M74 166l92-92"
+    stroke="url(#ladder)"
+    stroke-width="12"
+    stroke-linecap="round"
+  />
+  <path
+    d="M94 146l-24-24"
+    stroke="#fbe19a"
+    stroke-width="6"
+    stroke-linecap="round"
+  />
+  <path
+    d="M166 74l-24-24"
+    stroke="#fbe19a"
+    stroke-width="6"
+    stroke-linecap="round"
+  />
+  <path
+    d="M84 80c16-32 64-32 84 4 16 28 2 48-14 70-12 16-8 28 10 38"
+    fill="none"
+    stroke="url(#snake)"
+    stroke-width="14"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <circle cx="88" cy="70" r="12" fill="#1b1f3b" />
+  <circle cx="96" cy="72" r="4" fill="#ffffff" />
+</svg>
