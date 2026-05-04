@@ -10,6 +10,10 @@ BoardVerse is a high-fidelity HTML5 board game hub designed for large displays (
 - Snakes & Ladders fully implemented: 2–4 players (human + AI mix), three visual themes, player name editing, snake/ladder SVG overlays, and win detection
 - Placeholder screens for Chess, Checkers, and Ludo — ready to be replaced with full game engines
 
+## Gameplay Preview
+
+![Snakes and Ladders gameplay screenshot](assets/images/snakes-gameplay.png)
+
 ## Project Structure
 ```
 .
