@@ -3,33 +3,92 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Snakes &amp; Ladders Placeholder</title>
+    <title>Snakes &amp; Ladders — BoardVerse</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../../styles/gamePlaceholder.css" />
-    <script type="module" src="./snakesGame.js" defer></script>
+    <link rel="stylesheet" href="../../styles/snakesGame.css" />
   </head>
   <body>
-    <div class="placeholder-panel" data-placeholder-panel>
-      <h1 data-placeholder-title>Snakes &amp; Ladders</h1>
-      <p data-placeholder-description>
-        This space will transform into the colourful Snakes &amp; Ladders board. For now, it helps
-        validate your configuration pipeline.
-      </p>
-      <div data-placeholder-config></div>
-      <p>
-        Future gameplay code can hook into <code>games/snakes/snakesGame.js</code> when ready.
-      </p>
-      <a class="back-link" data-placeholder-return href="./snakesMenu.html">
-        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-          <path d="M10.5 3l-5 5 5 5 1.5-1.5L8.5 8l3.5-3.5L10.5 3z" />
-        </svg>
-        Back to menu
-      </a>
+
+    <!-- ── Outer wrapper ─────────────────────────────────────────────────── -->
+    <div class="game-wrapper">
+
+      <!-- Back button + page title -->
+      <header class="game-header">
+        <a class="back-link" href="./snakesMenu.html">
+          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+            <path d="M10.5 3l-5 5 5 5 1.5-1.5L8.5 8l3.5-3.5L10.5 3z" />
+          </svg>
+          Menu
+        </a>
+        <h1>Snakes &amp; Ladders</h1>
+      </header>
+
+      <!-- Board + sidebar side by side -->
+      <div class="game-layout">
+
+        <!-- ── 10×10 game board (cells injected by JS) ─────────────────── -->
+        <div class="board-container">
+          <div class="board" id="board"></div>
+        </div>
+
+        <!-- ── Right-hand sidebar ─────────────────────────────────────── -->
+        <aside class="sidebar">
+
+          <!-- Whose turn it is + latest move description -->
+          <div class="panel">
+            <div class="turn-label">Current Turn</div>
+            <div class="turn-name" id="turn-name">Loading…</div>
+            <p class="status-msg" id="status-msg">Press "Roll Dice" to start!</p>
+          </div>
+
+          <!-- Player cards — JS populates this panel for 2–4 players -->
+          <div class="panel" id="player-list"></div>
+
+          <!-- Name inputs for human players — JS populates this panel -->
+          <div class="panel" id="name-inputs-panel"></div>
+
+          <!-- Dice display + roll button -->
+          <div class="panel dice-panel">
+            <div class="dice-face" id="dice">?</div>
+            <button class="roll-btn" id="roll-btn">Roll Dice</button>
+          </div>
+
+          <!-- Restart button -->
+          <button class="restart-btn" id="restart-btn">↺ Restart Game</button>
+
+          <!-- Colour legend for the board -->
+          <div class="panel">
+            <div class="legend-title">Legend</div>
+            <div class="legend-item">
+              <span class="legend-swatch ladder"></span> Ladder (climb up)
+            </div>
+            <div class="legend-item">
+              <span class="legend-swatch snake"></span> Snake (slide down)
+            </div>
+            <!-- Player token legend items — JS populates this -->
+            <div id="legend-players"></div>
+          </div>
+
+        </aside>
+      </div>
     </div>
+
+    <!-- ── Win overlay (hidden; shown when a player reaches square 100) ── -->
+    <div class="win-overlay hidden" id="win-overlay">
+      <div class="win-card">
+        <div class="win-trophy">🏆</div>
+        <h2 id="win-message">Player 1 Wins!</h2>
+        <p>Reached square 100 first!</p>
+        <button class="roll-btn" id="play-again-btn">Play Again</button>
+      </div>
+    </div>
+
+    <!-- Game logic — plain script, no modules needed -->
+    <script src="./snakesGame.js"></script>
   </body>
 </html>

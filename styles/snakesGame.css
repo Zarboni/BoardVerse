@@ -1,0 +1,539 @@
+/* ──────────────────────────────────────────────────────────────────────────
+   Snakes & Ladders — game screen styles
+   Matches the BoardVerse dark/glassmorphic look from gamePlaceholder.css
+   ────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  font-size: 16px;
+  --bg: radial-gradient(circle at 20% 20%, #282c34, #10121a 70%);
+  --panel: rgba(14, 18, 27, 0.85);
+  --panel-border: rgba(255, 255, 255, 0.08);
+  --text: rgba(255, 255, 255, 0.85);
+  --accent: #48d6ff;
+  --p1-color: #ffb347;   /* Player 1 — orange */
+  --p2-color: #48d6ff;   /* Player 2 — cyan  */
+  --p3-color: #a78bfa;   /* Player 3 — purple */
+  --p4-color: #f472b6;   /* Player 4 — pink */
+  --ladder-color: #34d399;  /* SVG overlay colours, overridden per theme */
+  --snake-color:  #ef4444;
+  --snake-inner:  #fca5a5;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  font-family: 'Poppins', 'Segoe UI', Tahoma, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* ── Page wrapper ───────────────────────────────────────────────────────── */
+.game-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 2rem 2rem;
+  gap: 1.5rem;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+/* ── Header (back link + title) ─────────────────────────────────────────── */
+.game-header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.game-header h1 {
+  margin: 0;
+  font-size: clamp(1.3rem, 2.5vw, 2rem);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: rgba(255, 255, 255, 0.65);
+  text-decoration: none;
+  font-size: 0.78rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  transition: color 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+.back-link svg    { width: 14px; height: 14px; fill: currentColor; }
+.back-link:hover  { color: var(--accent); border-color: var(--accent); }
+
+/* ── Main two-column layout: board left, sidebar right ──────────────────── */
+.game-layout {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+/* ── Board grid ─────────────────────────────────────────────────────────── */
+.board {
+  display: grid;
+  grid-template-columns: repeat(10, 64px);
+  grid-template-rows:    repeat(10, 64px);
+  gap: 2px;
+  padding: 10px;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
+  backdrop-filter: blur(22px);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+  position: relative; /* SVG overlay is absolute within this */
+}
+
+/* Individual square */
+.cell {
+  width: 64px;
+  height: 64px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: rgba(255, 255, 255, 0.03);
+  gap: 1px;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* Alternating shade for checkerboard pattern */
+.cell.dark { background: rgba(255, 255, 255, 0.065); }
+
+/* Ladder start square — green tint */
+.cell.ladder-start                { background: rgba(52, 211, 153, 0.18); }
+.cell.ladder-start .cell-num      { color: #34d399; }
+
+/* Snake head square — red tint */
+.cell.snake-start                 { background: rgba(239, 68, 68, 0.15); }
+.cell.snake-start .cell-num       { color: #ef8080; }
+
+/* Square number printed inside each cell */
+.cell-num {
+  font-size: 0.58rem;
+  color: rgba(255, 255, 255, 0.28);
+  line-height: 1;
+  font-weight: 500;
+}
+
+/* Small "▲ dest" / "▼ dest" hint shown on snake/ladder squares */
+.cell-hint   { font-size: 0.48rem; line-height: 1; font-weight: 600; }
+.ladder-hint { color: #34d399; }
+.snake-hint  { color: #ef8080; }
+
+/* Container for player tokens inside a cell */
+.cell-tokens {
+  display: flex;
+  gap: 2px;
+  justify-content: center;
+  position: relative;
+  z-index: 2; /* keep tokens above the SVG overlay */
+}
+
+/* Coloured dot representing a player on the board */
+.token {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.7);
+  flex-shrink: 0;
+}
+.token.p1 { background: var(--p1-color); }
+.token.p2 { background: var(--p2-color); }
+.token.p3 { background: var(--p3-color); }
+.token.p4 { background: var(--p4-color); }
+
+/* ── Sidebar ────────────────────────────────────────────────────────────── */
+.sidebar {
+  flex: 1;
+  min-width: 230px;
+  max-width: 295px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Shared glassmorphic panel used throughout the sidebar */
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 14px;
+  padding: 1.1rem 1.25rem;
+  backdrop-filter: blur(22px);
+}
+
+/* ── Turn / status panel ────────────────────────────────────────────────── */
+.turn-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.38);
+  margin-bottom: 0.2rem;
+}
+
+.turn-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.55rem;
+  transition: color 0.3s;
+}
+
+.status-msg {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.58);
+  line-height: 1.55;
+  margin: 0;
+  min-height: 2.5rem;
+}
+
+/* ── Player info cards ──────────────────────────────────────────────────── */
+.player-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  margin-bottom: 0.5rem;
+  transition: border-color 0.2s, background 0.2s;
+}
+.player-card:last-child { margin-bottom: 0; }
+
+/* Highlight the card of the player whose turn it currently is */
+.player-card.active-player {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.player-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+}
+.player-dot.p1 { background: var(--p1-color); }
+.player-dot.p2 { background: var(--p2-color); }
+.player-dot.p3 { background: var(--p3-color); }
+.player-dot.p4 { background: var(--p4-color); }
+
+.player-name { font-weight: 600; font-size: 0.85rem; }
+.player-pos  { font-size: 0.72rem; color: rgba(255, 255, 255, 0.44); margin-top: 0.1rem; }
+
+/* ── Dice panel ─────────────────────────────────────────────────────────── */
+.dice-panel {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+}
+
+/* The white dice square showing the rolled number */
+.dice-face {
+  width: 60px;
+  height: 60px;
+  background: #ffffff;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #1b1f2f;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  transition: transform 0.08s;
+  user-select: none;
+}
+
+/* Roll dice button */
+.roll-btn {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background: linear-gradient(120deg, #ffb347, #ffcc33);
+  color: #1b1f2f;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.88rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: 0 8px 20px rgba(255, 188, 45, 0.28);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.roll-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(255, 188, 45, 0.4);
+}
+.roll-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Restart button (secondary, ghost style) */
+.restart-btn {
+  padding: 0.65rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.65);
+  font-family: inherit;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: background 0.2s, color 0.2s;
+}
+.restart-btn:hover {
+  background: rgba(255, 255, 255, 0.09);
+  color: #ffffff;
+}
+
+/* ── Legend ─────────────────────────────────────────────────────────────── */
+.legend-title {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.38);
+  margin-bottom: 0.6rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.76rem;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 0.4rem;
+}
+.legend-item:last-child { margin-bottom: 0; }
+
+.legend-swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+.legend-swatch.ladder { background: rgba(52, 211, 153, 0.4); border: 1px solid #34d399; }
+.legend-swatch.snake  { background: rgba(239, 68,  68, 0.35); border: 1px solid #ef8080; }
+
+.legend-token {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.45);
+  flex-shrink: 0;
+}
+.legend-token.p1 { background: var(--p1-color); }
+.legend-token.p2 { background: var(--p2-color); }
+.legend-token.p3 { background: var(--p3-color); }
+.legend-token.p4 { background: var(--p4-color); }
+
+/* ── Win overlay (hidden until a player reaches square 100) ─────────────── */
+.win-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+.win-overlay.hidden { display: none; }
+
+.win-card {
+  background: var(--panel);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  padding: 2.5rem 3rem;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+}
+.win-trophy      { font-size: 3.5rem; margin-bottom: 0.5rem; }
+.win-card h2     { margin: 0 0 0.5rem; font-size: 1.8rem; }
+.win-card p      { color: rgba(255, 255, 255, 0.55); margin: 0 0 1.5rem; }
+.win-card .roll-btn { width: 100%; }
+
+/* ── SVG snake & ladder overlays ────────────────────────────────────────── */
+
+/* Ladder rails and rungs */
+.ladder-rail {
+  stroke: var(--ladder-color);
+  fill: none;
+  stroke-linecap: round;
+  opacity: 0.88;
+}
+.ladder-rung {
+  stroke: var(--ladder-color);
+  fill: none;
+  stroke-linecap: round;
+  opacity: 0.7;
+}
+
+/* Snake body — outer thick stroke + inner highlight stripe */
+.snake-body-outer {
+  fill: none;
+  stroke: var(--snake-color);
+  stroke-linecap: round;
+  opacity: 0.75;
+}
+.snake-body-inner {
+  fill: none;
+  stroke: var(--snake-inner);
+  stroke-linecap: round;
+  opacity: 0.55;
+}
+.snake-head { fill: var(--snake-color); opacity: 0.92; }
+.snake-eye  { fill: #1b1f2f; }
+
+/* ── Neon theme ──────────────────────────────────────────────────────────── */
+body.theme-neon {
+  --bg: radial-gradient(circle at 20% 20%, #070a16, #030408 70%);
+  --panel: rgba(5, 8, 22, 0.92);
+  --panel-border: rgba(0, 255, 136, 0.16);
+  --text: rgba(200, 255, 235, 0.9);
+  --accent: #00ff88;
+  --p1-color: #ff00aa;
+  --p2-color: #00ff88;
+  --p3-color: #ff8800;
+  --p4-color: #ff4444;
+  --ladder-color: #00ff88;
+  --snake-color:  #ff0077;
+  --snake-inner:  #ff88cc;
+}
+body.theme-neon .board {
+  border-color: rgba(0, 255, 136, 0.22);
+  box-shadow: 0 0 48px rgba(0, 255, 136, 0.1), 0 18px 50px rgba(0, 0, 0, 0.55);
+}
+body.theme-neon .cell                { background: rgba(0, 255, 136, 0.02); }
+body.theme-neon .cell.dark           { background: rgba(0, 255, 136, 0.055); }
+body.theme-neon .cell.ladder-start   { background: rgba(0, 255, 136, 0.14); }
+body.theme-neon .cell.ladder-start .cell-num { color: #00ff88; }
+body.theme-neon .cell.snake-start    { background: rgba(255, 0, 119, 0.14); }
+body.theme-neon .cell.snake-start .cell-num  { color: #ff5599; }
+body.theme-neon .ladder-hint         { color: #00ff88; }
+body.theme-neon .snake-hint          { color: #ff5599; }
+body.theme-neon .snake-eye           { fill: #030408; }
+body.theme-neon .roll-btn {
+  background: linear-gradient(120deg, #ff00aa, #cc007a);
+  box-shadow: 0 8px 20px rgba(255, 0, 170, 0.38);
+}
+
+/* ── Retro theme ─────────────────────────────────────────────────────────── */
+body.theme-retro {
+  --bg: radial-gradient(circle at 20% 20%, #2c1a06, #170d01 70%);
+  --panel: rgba(25, 14, 4, 0.92);
+  --panel-border: rgba(200, 150, 60, 0.16);
+  --text: rgba(255, 228, 185, 0.9);
+  --accent: #d4a030;
+  --p1-color: #e06020;
+  --p2-color: #d4a030;
+  --p3-color: #6090c0;
+  --p4-color: #80c040;
+  --ladder-color: #c8a828;
+  --snake-color:  #c0392b;
+  --snake-inner:  #e87060;
+}
+body.theme-retro .board {
+  background: rgba(30, 16, 4, 0.92);
+  border-color: rgba(200, 150, 60, 0.22);
+}
+body.theme-retro .cell                { background: rgba(200, 150, 60, 0.04); }
+body.theme-retro .cell.dark           { background: rgba(200, 150, 60, 0.11); }
+body.theme-retro .cell.ladder-start   { background: rgba(200, 168, 40, 0.2); }
+body.theme-retro .cell.ladder-start .cell-num { color: #c8a828; }
+body.theme-retro .cell.snake-start    { background: rgba(192, 57, 43, 0.2); }
+body.theme-retro .cell.snake-start .cell-num  { color: #e07070; }
+body.theme-retro .ladder-hint         { color: #c8a828; }
+body.theme-retro .snake-hint          { color: #e07060; }
+body.theme-retro .snake-eye           { fill: #170d01; }
+body.theme-retro .roll-btn {
+  background: linear-gradient(120deg, #d4a030, #e8c050);
+  box-shadow: 0 8px 20px rgba(212, 160, 48, 0.38);
+}
+
+/* ── Player name rename panel ───────────────────────────────────────────── */
+.name-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 0.4rem;
+}
+/* Small "P1:" label shown before each input when multiple humans play */
+.name-row-label {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.4);
+  flex-shrink: 0;
+  min-width: 1.8rem;
+}
+
+.name-input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 7px;
+  padding: 0.42rem 0.7rem;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.82rem;
+  outline: none;
+  transition: border-color 0.2s;
+  min-width: 0; /* lets flexbox shrink it below its content width */
+}
+.name-input:focus { border-color: var(--accent); }
+
+.name-save-btn {
+  padding: 0.42rem 0.85rem;
+  border: 1px solid var(--accent);
+  border-radius: 7px;
+  background: transparent;
+  color: var(--accent);
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s, color 0.2s;
+  flex-shrink: 0;
+}
+.name-save-btn:hover {
+  background: var(--accent);
+  color: #1b1f2f;
+}
+
+/* ── Responsive — shrink board on smaller screens ────────────────────────── */
+@media (max-width: 1060px) and (min-width: 761px) {
+  .board {
+    grid-template-columns: repeat(10, 52px);
+    grid-template-rows:    repeat(10, 52px);
+  }
+  .cell { width: 52px; height: 52px; }
+}
+
+@media (max-width: 760px) {
+  .board {
+    grid-template-columns: repeat(10, 40px);
+    grid-template-rows:    repeat(10, 40px);
+  }
+  .cell { width: 40px; height: 40px; }
+  .cell-num { font-size: 0.48rem; }
+  .cell-hint { font-size: 0.38rem; }
+  .game-layout { flex-direction: column; align-items: center; }
+  .sidebar { max-width: 100%; min-width: unset; width: 100%; box-sizing: border-box; }
+}

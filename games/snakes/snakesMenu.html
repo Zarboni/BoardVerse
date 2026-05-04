@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Snakes &amp; Ladders Menu</title>
+    <title>Snakes &amp; Ladders — Menu</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -11,10 +11,65 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../../styles/menu.css" />
-    <script type="module" src="../../js/gameMenu.js" defer></script>
+    <style>
+      /* ── Stepper control (−  N  +) for human / AI counts ─────────────── */
+      .stepper-row {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .stepper-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.06);
+        color: #fff;
+        font-size: 1.3rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: inherit;
+        padding: 0;
+        transition: background 0.15s;
+      }
+      .stepper-btn:hover:not(:disabled) { background: rgba(255, 255, 255, 0.14); }
+      .stepper-btn:disabled             { opacity: 0.3; cursor: not-allowed; }
+
+      .stepper-val {
+        font-size: 1.5rem;
+        font-weight: 600;
+        min-width: 2rem;
+        text-align: center;
+      }
+
+      .stepper-range {
+        font-size: 0.72rem;
+        color: rgba(255, 255, 255, 0.35);
+        letter-spacing: 0.04em;
+      }
+
+      /* Summary line — "2 human · 1 AI = 3 players total" */
+      .player-summary {
+        margin: 0.5rem 0 0;
+        font-size: 0.88rem;
+        color: rgba(255, 255, 255, 0.55);
+        min-height: 1.4em;
+      }
+
+      /* Error shown when the total is outside 2–4 */
+      .validation-msg {
+        margin: 0.3rem 0 0;
+        font-size: 0.82rem;
+        color: #ff8a8a;
+        min-height: 1.2em;
+      }
+    </style>
   </head>
-  <body data-game-id="snakes">
-    <div class="menu-shell" data-game-layout>
+  <body>
+    <div class="menu-shell">
       <a class="back-link" href="../../index.html">
         <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
           <path d="M10.5 3l-5 5 5 5 1.5-1.5L8.5 8l3.5-3.5L10.5 3z" />
@@ -23,37 +78,163 @@
       </a>
 
       <header class="menu-header">
-        <h1 data-game-title>Snakes &amp; Ladders</h1>
+        <h1>Snakes &amp; Ladders</h1>
         <div class="meta">
-          <p data-game-subtitle>Dial in your climb to the top.</p>
+          <p>Climb high, avoid the bite, and reach 100 first.</p>
           <span>Pick how you want to chase victory across the board.</span>
         </div>
       </header>
 
       <section class="menu-options">
+
+        <!-- ── Human player count ──────────────────────────────────────── -->
         <div class="option-group">
-          <label for="players">Players</label>
-          <div class="option-row" id="players" data-option-group="players"></div>
+          <label>Human Players</label>
+          <div class="stepper-row">
+            <button class="stepper-btn" id="humans-dec" aria-label="Fewer human players">−</button>
+            <span class="stepper-val" id="humans-val">2</span>
+            <button class="stepper-btn" id="humans-inc" aria-label="More human players">+</button>
+            <span class="stepper-range">(1 – 4)</span>
+          </div>
         </div>
 
+        <!-- ── AI player count ─────────────────────────────────────────── -->
         <div class="option-group">
-          <label for="difficulty">Difficulty</label>
-          <div class="option-row" id="difficulty" data-option-group="difficulty"></div>
+          <label>AI Players</label>
+          <div class="stepper-row">
+            <button class="stepper-btn" id="ai-dec" aria-label="Fewer AI players">−</button>
+            <span class="stepper-val" id="ai-val">0</span>
+            <button class="stepper-btn" id="ai-inc" aria-label="More AI players">+</button>
+            <span class="stepper-range">(0 – 3)</span>
+          </div>
+          <!-- Live summary + validation beneath the AI stepper -->
+          <p class="player-summary" id="player-summary"></p>
+          <p class="validation-msg" id="validation-msg"></p>
         </div>
 
+        <!-- ── Visual theme chips ──────────────────────────────────────── -->
         <div class="option-group">
-          <label for="themes">Visual Theme</label>
-          <div class="option-row" id="themes" data-option-group="themes"></div>
+          <label>Visual Theme</label>
+          <div class="option-row" id="theme-chips"></div>
         </div>
+
       </section>
 
       <div class="menu-actions">
         <div class="theme-preview">
-          <div class="theme-swatch" data-theme-swatch></div>
-          <span>Theme: <strong data-theme-label>Classic</strong></span>
+          <div class="theme-swatch" id="theme-swatch"></div>
+          <span>Theme: <strong id="theme-label">Classic</strong></span>
         </div>
-        <button class="start-button" data-start-button>Start Game</button>
+        <button class="start-button" id="start-btn">Start Game</button>
       </div>
     </div>
+
+    <script>
+      // ── Stepper state ─────────────────────────────────────────────────────
+      // humans: 1–4,  ai: 0–3,  total must be 2–4
+      let humans = 2;
+      let ai     = 0;
+
+      const humansValEl  = document.getElementById('humans-val');
+      const aiValEl      = document.getElementById('ai-val');
+      const summaryEl    = document.getElementById('player-summary');
+      const validationEl = document.getElementById('validation-msg');
+      const startBtn     = document.getElementById('start-btn');
+      const humanDecBtn  = document.getElementById('humans-dec');
+      const humanIncBtn  = document.getElementById('humans-inc');
+      const aiDecBtn     = document.getElementById('ai-dec');
+      const aiIncBtn     = document.getElementById('ai-inc');
+
+      /** Clamp v between min and max inclusive. */
+      function clamp(v, min, max) { return Math.min(Math.max(v, min), max); }
+
+      /**
+       * Refresh all labels, the summary line, the validation message,
+       * and which stepper buttons are enabled/disabled.
+       */
+      function refreshSteppers() {
+        const total = humans + ai;
+
+        humansValEl.textContent = humans;
+        aiValEl.textContent     = ai;
+
+        // Summary: "2 human · 1 AI = 3 players total"
+        const hLabel = humans === 1 ? '1 human' : `${humans} human`;
+        const aLabel = ai    === 1 ? '1 AI'    : `${ai} AI`;
+        summaryEl.textContent =
+          `${hLabel} · ${aLabel} = ${total} player${total !== 1 ? 's' : ''} total`;
+
+        // Validation
+        if (total < 2) {
+          validationEl.textContent = 'Need at least 2 players total.';
+          startBtn.disabled = true;
+        } else if (total > 4) {
+          validationEl.textContent = 'Maximum 4 players total.';
+          startBtn.disabled = true;
+        } else {
+          validationEl.textContent = '';
+          startBtn.disabled = false;
+        }
+
+        // Disable stepper buttons at their limits
+        humanDecBtn.disabled = humans <= 1;
+        humanIncBtn.disabled = humans >= 4 || total >= 4;
+        aiDecBtn.disabled    = ai <= 0;
+        aiIncBtn.disabled    = ai >= 3  || total >= 4;
+      }
+
+      // Wire up all four stepper buttons
+      humanDecBtn.addEventListener('click', () => { humans = clamp(humans - 1, 1, 4); refreshSteppers(); });
+      humanIncBtn.addEventListener('click', () => { humans = clamp(humans + 1, 1, 4); refreshSteppers(); });
+      aiDecBtn.addEventListener('click',    () => { ai     = clamp(ai - 1,     0, 3); refreshSteppers(); });
+      aiIncBtn.addEventListener('click',    () => { ai     = clamp(ai + 1,     0, 3); refreshSteppers(); });
+
+      // Set the initial display
+      refreshSteppers();
+
+      // ── Theme chips ───────────────────────────────────────────────────────
+      const THEMES = [
+        { id: 'classic', label: 'Classic' },
+        { id: 'neon',    label: 'Neon'    },
+        { id: 'retro',   label: 'Retro'   },
+      ];
+
+      let selectedTheme = 'classic';
+
+      const themeChipsEl = document.getElementById('theme-chips');
+      const swatchEl     = document.getElementById('theme-swatch');
+      const labelEl      = document.getElementById('theme-label');
+
+      THEMES.forEach((t, i) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'menu-chip';
+        btn.dataset.value = t.id;
+        btn.dataset.active = i === 0 ? 'true' : 'false';
+        btn.textContent = t.label;
+
+        btn.addEventListener('click', () => {
+          // Deactivate all chips, activate this one
+          themeChipsEl.querySelectorAll('.menu-chip').forEach(c => {
+            c.dataset.active = 'false';
+          });
+          btn.dataset.active = 'true';
+          selectedTheme = t.id;
+          swatchEl.dataset.theme = t.id;
+          labelEl.textContent    = t.label;
+        });
+
+        themeChipsEl.appendChild(btn);
+      });
+
+      // ── Start button ──────────────────────────────────────────────────────
+      startBtn.addEventListener('click', () => {
+        const total = humans + ai;
+        if (total < 2 || total > 4) return; // guard — button should already be disabled
+
+        const params = new URLSearchParams({ humans, ai, theme: selectedTheme });
+        window.location.href = 'snakesGame.html?' + params.toString();
+      });
+    </script>
   </body>
 </html>
