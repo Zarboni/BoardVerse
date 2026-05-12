@@ -83,5 +83,3 @@ A browser-based board game hub built for desktop. Four classic titles — each w
 - Vanilla JavaScript — no frameworks, no build step
 
 ---
-
-Made by Faiz · eezydoes@hotmail.com
