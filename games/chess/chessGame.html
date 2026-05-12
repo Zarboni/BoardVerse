@@ -1,36 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chess Placeholder</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="../../styles/gamePlaceholder.css" />
-    <script type="module" src="./chessGame.js" defer></script>
-  </head>
-  <body>
-    <div class="placeholder-panel" data-placeholder-panel>
-      <h1 data-placeholder-title>Chess</h1>
-      <p data-placeholder-description>
-        This interactive area will host the full chess experience. The configuration you chose is
-        summarised below.
-      </p>
-      <div data-placeholder-config></div>
-      <p>
-        Game logic loads from <code>games/chess/chessGame.js</code>. Replace this placeholder with
-        the full implementation when ready.
-      </p>
-      <a class="back-link" data-placeholder-return href="./chessMenu.html">
-        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-          <path d="M10.5 3l-5 5 5 5 1.5-1.5L8.5 8l3.5-3.5L10.5 3z" />
-        </svg>
-        Back to menu
-      </a>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chess — BoardVerse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="chessGame.css">
+</head>
+<body>
+  <div class="game-wrapper">
+    <!-- Left sidebar: back button, game info -->
+    <aside class="sidebar sidebar-left">
+      <a href="chessMenu.html" class="back-btn">&#8592; Menu</a>
+      <div class="game-title">Chess</div>
+      <div class="player-turn" id="playerTurn">White's Turn</div>
+      <div class="captured-section">
+        <div class="captured-label">Captured by White</div>
+        <div class="captured-pieces" id="capturedByWhite"></div>
+        <div class="captured-label">Captured by Black</div>
+        <div class="captured-pieces" id="capturedByBlack"></div>
+      </div>
+    </aside>
+
+    <!-- Main board area -->
+    <main class="board-area">
+      <div class="board-container">
+        <div class="rank-labels" id="rankLabels"></div>
+        <div class="chess-board" id="chessBoard"></div>
+        <div class="file-labels" id="fileLabels"></div>
+      </div>
+    </main>
+
+    <!-- Right sidebar: move history, rules, buttons -->
+    <aside class="sidebar sidebar-right">
+      <div class="move-history-label">Move History</div>
+      <div class="move-history" id="moveHistory"></div>
+
+      <div class="rules-panel">
+        <div class="rules-label">Rules</div>
+        <ul class="rules-list">
+          <li>Check: King is under attack</li>
+          <li>Checkmate: No legal escape</li>
+          <li>Stalemate: No moves, no check</li>
+          <li>Castling: King + Rook swap</li>
+          <li>En passant: Pawn capture on pass</li>
+          <li>Promote pawns on back rank</li>
+        </ul>
+      </div>
+
+      <div class="action-buttons">
+        <button class="btn btn-secondary" id="newGameBtn">New Game</button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Promotion dialog -->
+  <div class="overlay" id="promotionOverlay" style="display:none">
+    <div class="promotion-dialog">
+      <div class="promo-title">Promote Pawn</div>
+      <div class="promo-pieces" id="promoPieces"></div>
     </div>
-  </body>
+  </div>
+
+  <!-- Game over overlay -->
+  <div class="overlay" id="gameOverOverlay" style="display:none">
+    <div class="result-dialog">
+      <div class="result-title" id="resultTitle"></div>
+      <div class="result-subtitle" id="resultSubtitle"></div>
+      <div class="result-buttons">
+        <button class="btn btn-primary" id="playAgainBtn">Play Again</button>
+        <button class="btn btn-secondary" id="menuBtn">Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="chessGame.js"></script>
+</body>
 </html>

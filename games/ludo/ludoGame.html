@@ -3,34 +3,93 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ludo Placeholder</title>
+    <title>Ludo — BoardVerse</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../../styles/gamePlaceholder.css" />
-    <script type="module" src="./ludoGame.js" defer></script>
+    <link rel="stylesheet" href="ludoGame.css" />
   </head>
   <body>
-    <div class="placeholder-panel" data-placeholder-panel>
-      <h1 data-placeholder-title>Ludo</h1>
-      <p data-placeholder-description>
-        The full Ludo experience will appear here. Until then, use this screen to verify your
-        configuration flow.
-      </p>
-      <div data-placeholder-config></div>
-      <p>
-        Gameplay hooks can be wired through <code>games/ludo/ludoGame.js</code> when development
-        begins.
-      </p>
-      <a class="back-link" data-placeholder-return href="./ludoMenu.html">
-        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-          <path d="M10.5 3l-5 5 5 5 1.5-1.5L8.5 8l3.5-3.5L10.5 3z" />
-        </svg>
-        Back to menu
-      </a>
+    <div class="game-wrapper">
+
+      <!-- ── Left sidebar ──────────────────────────────────────────────── -->
+      <aside class="sidebar sidebar-left">
+
+        <a class="back-btn" href="ludoMenu.html">
+          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+            <path d="M10.5 3l-5 5 5 5 1.5-1.5L8.5 8l3.5-3.5L10.5 3z" />
+          </svg>
+          Menu
+        </a>
+
+        <div class="game-title">Ludo</div>
+
+        <!-- Player turn indicators rendered by JS -->
+        <div class="players-status" id="playersStatus"></div>
+
+        <!-- Name inputs for human players — JS populates this -->
+        <div class="name-inputs-section" id="nameInputsPanel"></div>
+
+        <!-- Dice section -->
+        <div class="dice-section">
+          <div class="dice-label">Dice</div>
+          <div class="dice" id="diceDisplay">&#x1F3B2;</div>
+          <button class="btn btn-roll" id="rollBtn">Roll Dice</button>
+          <div class="dice-result" id="diceResult"></div>
+        </div>
+
+        <!-- Game log -->
+        <div class="game-log">
+          <div class="log-label">Game Log</div>
+          <div class="log-entries" id="logEntries"></div>
+        </div>
+
+      </aside>
+
+      <!-- ── Board area ─────────────────────────────────────────────────── -->
+      <main class="board-area">
+        <div class="ludo-board" id="ludoBoard">
+          <!-- Board rendered by JS -->
+        </div>
+      </main>
+
+      <!-- ── Right sidebar ─────────────────────────────────────────────────── -->
+      <aside class="sidebar sidebar-right">
+
+        <div class="rules-panel">
+          <div class="rules-label">Rules</div>
+          <ul class="rules-list">
+            <li>Roll a 6 to release a token from home</li>
+            <li>Rolling a 6 grants a bonus turn</li>
+            <li>Land on an opponent to send them home</li>
+            <li>Star squares are safe — no captures</li>
+            <li>Enter the coloured stretch to reach home</li>
+            <li>Get all 4 tokens to the centre to win</li>
+          </ul>
+        </div>
+
+        <button class="btn btn-secondary" id="newGameBtn">New Game</button>
+
+      </aside>
+
     </div>
+
+    <!-- ── Win overlay ────────────────────────────────────────────────── -->
+    <div class="overlay" id="winOverlay">
+      <div class="win-dialog">
+        <div class="win-trophy">&#x1F3C6;</div>
+        <div class="win-title" id="winTitle"></div>
+        <div class="win-subtitle">All tokens reached home!</div>
+        <div class="win-buttons">
+          <button class="btn btn-primary" id="playAgainBtn">Play Again</button>
+          <button class="btn btn-secondary" id="menuBtn">Menu</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="ludoGame.js"></script>
   </body>
 </html>

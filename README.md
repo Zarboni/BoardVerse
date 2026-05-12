@@ -1,56 +1,87 @@
 # BoardVerse
 
-BoardVerse is a high-fidelity HTML5 board game hub designed for large displays (1920×1080 and beyond). It showcases a modern grid of classic titles, routes players into configurable game menus, and provides fully playable or placeholder game screens.
+A browser-based board game hub built for desktop. Four classic titles — each with a configurable menu, multiple visual themes, and a fully playable game screen.
 
-## Highlights
-- Responsive glassmorphism UI tailored for desktop and tablet resolutions
-- Modular ES6 architecture with a single game registry (`js/data/games.js`)
-- Rich CSS animations, hover effects, and Google Fonts typography
-- Reusable configuration menus (players, difficulty, theme) for every game
-- Snakes & Ladders fully implemented: 2–4 players (human + AI mix), three visual themes, player name editing, snake/ladder SVG overlays, and win detection
-- Placeholder screens for Chess, Checkers, and Ludo — ready to be replaced with full game engines
+## Games
 
-## Gameplay Preview
+| Game | Players | Themes | Opponents |
+|------|---------|--------|-----------|
+| Snakes & Ladders | 2–4 | Classic · Neon · Retro | Human vs computer |
+| Chess | 2 | Classic · Neon · Retro | Human vs computer |
+| Checkers | 2 | Classic · Neon · Retro | Human vs computer |
+| Ludo | 2–4 | Classic · Neon · Retro | Human vs computer |
 
-![Snakes and Ladders gameplay screenshot](assets/images/snakes-gameplay.png)
+## Features
+
+- Dark glassmorphic UI designed for 1080p and above
+- Three visual themes per game switchable from the menu
+- Consistent three-column layout across all games — controls on the left, board in the centre, rules and actions on the right
+- Player name editing on all games so nobody loses track of whose token is whose
+- Full game rules displayed in-game on every screen
+- Game logs and move history on relevant games
+- SVG snake and ladder overlays that scale cleanly at any resolution
+
+## Gameplay Previews
+
+![Snakes and Ladders](assets/images/snakes-gameplay.png)
 
 ## Project Structure
+
 ```
 .
-├── index.html                # Main hub landing page
+├── index.html                   # Hub landing page — game card grid
 ├── assets/
-│   └── images/               # SVG placeholders for each game card
+│   └── images/                  # Game card artwork and screenshots
 ├── js/
-│   ├── data/games.js         # Registry that powers the hub and menus
-│   ├── main.js               # Hub grid rendering logic
-│   ├── gameMenu.js           # Shared menu interactions
-│   └── gameRuntime.js        # Placeholder runtime for game screens
+│   ├── data/games.js            # Central game registry
+│   ├── main.js                  # Hub grid rendering
+│   ├── gameMenu.js              # Shared menu chip selection logic
+│   └── gameRuntime.js           # Legacy placeholder runtime
 ├── games/
-│   ├── chess/                # Chess menu + placeholder game screen
-│   ├── checkers/             # Checkers menu + placeholder game screen
-│   ├── ludo/                 # Ludo menu + placeholder game screen
-│   └── snakes/               # Snakes & Ladders — fully playable game
+│   ├── chess/
+│   │   ├── chessMenu.html       # Menu — players, difficulty, theme
+│   │   ├── chessGame.html       # Game screen
+│   │   ├── chessGame.css        # Styles + themes
+│   │   └── chessGame.js         # Full engine (castling, en passant, promotion, checkmate)
+│   ├── checkers/
+│   │   ├── checkersMenu.html    # Menu
+│   │   ├── checkersGame.html    # Game screen
+│   │   ├── checkersGame.css     # Styles + themes
+│   │   └── checkersGame.js      # Full engine (forced captures, multi-jump, king promotion)
+│   ├── ludo/
+│   │   ├── ludoMenu.html        # Custom menu with player count steppers
+│   │   ├── ludoGame.html        # Game screen
+│   │   ├── ludoGame.css         # Styles + themes
+│   │   └── ludoGame.js          # Full engine (token release, captures, home stretch, win)
+│   └── snakes/
+│       ├── snakesMenu.html      # Custom menu with player count steppers
+│       ├── snakesGame.html      # Game screen
+│       └── snakesGame.js        # Full engine (SVG overlays, snake/ladder logic, win detection)
 └── styles/
-    ├── main.css              # Hub styling
-    ├── menu.css              # Shared menu styling
-    ├── gamePlaceholder.css   # Placeholder game screen styling
-    └── snakesGame.css        # Snakes & Ladders game screen styling
+    ├── main.css                 # Hub styling
+    ├── menu.css                 # Shared menu styling
+    ├── gamePlaceholder.css      # Legacy placeholder styling
+    └── snakesGame.css           # Snakes & Ladders game screen styling
 ```
 
 ## Getting Started
-1. Serve the project with any static file server (e.g. `npx http-server`, `python -m http.server`, or a Live Server extension).
+
+1. Serve the project from any static file server:
+   ```
+   npx http-server .
+   # or
+   python -m http.server
+   # or use the Live Server extension in VS Code
+   ```
 2. Open `index.html` in your browser.
-3. Explore the hub, open a game menu, tweak options, and launch the placeholder game page to verify the configuration flow.
-
-## Adding a New Game
-1. **Update the registry** – Add an entry to `js/data/games.js` with the game id, name, image, and menu/play page paths.
-2. **Create assets** – Add the game’s SVG/PNG artwork to `assets/images/`.
-3. **Create menu + game screen** – Duplicate an existing folder under `games/`. For a placeholder, adjust the `data-game-id` and wire a `<gameId>Game.js` that calls `initGamePlaceholder(‘<gameId>’)`. For a full implementation, use `games/snakes/` as a reference for structure.
-
-When implementing real gameplay, replace the placeholder HTML/CSS/JS inside the game folder with your actual engine while keeping the URL routing intact.
+3. Pick a game, configure players and theme, and play.
 
 ## Tech Stack
-- HTML5 with semantic structure
-- Modern CSS (Flexbox, Grid, transitions) for responsive layouts
-- Vanilla JavaScript ES6 modules for modularity
-- Lightweight static assets (SVG illustrations) for crisp 4K rendering
+
+- HTML5
+- CSS (Flexbox, Grid, custom properties, transitions)
+- Vanilla JavaScript — no frameworks, no build step
+
+---
+
+Made by Faiz · eezydoes@hotmail.com

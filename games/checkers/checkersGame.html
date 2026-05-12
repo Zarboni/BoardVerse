@@ -3,34 +3,102 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Checkers Placeholder</title>
+    <title>Checkers — BoardVerse</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../../styles/gamePlaceholder.css" />
-    <script type="module" src="./checkersGame.js" defer></script>
+    <link rel="stylesheet" href="checkersGame.css" />
   </head>
   <body>
-    <div class="placeholder-panel" data-placeholder-panel>
-      <h1 data-placeholder-title>Checkers</h1>
-      <p data-placeholder-description>
-        This area will evolve into a full-featured checkers experience. Review your configuration
-        and plug in gameplay when ready.
-      </p>
-      <div data-placeholder-config></div>
-      <p>
-        Game scaffolding lives in <code>games/checkers/checkersGame.js</code>. Replace this stub
-        with real mechanics later on.
-      </p>
-      <a class="back-link" data-placeholder-return href="./checkersMenu.html">
-        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-          <path d="M10.5 3l-5 5 5 5 1.5-1.5L8.5 8l3.5-3.5L10.5 3z" />
-        </svg>
-        Back to menu
-      </a>
+
+    <!-- ── Three-column layout ───────────────────────────────────────────── -->
+    <div class="game-wrapper">
+
+      <!-- ── Left sidebar ─────────────────────────────────────────────────── -->
+      <aside class="sidebar sidebar-left">
+        <a href="checkersMenu.html" class="back-btn">
+          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+            <path d="M10.5 3l-5 5 5 5 1.5-1.5L8.5 8l3.5-3.5L10.5 3z" />
+          </svg>
+          Menu
+        </a>
+
+        <div class="game-title">Checkers</div>
+
+        <div class="player-turn red-turn" id="playerTurn">Red's Turn</div>
+
+        <div class="piece-counts">
+          <div class="count-row">
+            <div class="count-dot red-dot"></div>
+            <span>Red: <strong id="redCount">12</strong></span>
+          </div>
+          <div class="count-row">
+            <div class="count-dot white-dot"></div>
+            <span>White: <strong id="whiteCount">12</strong></span>
+          </div>
+        </div>
+
+        <div class="captures-section">
+          <div class="captures-label">Captured</div>
+          <div class="captures-display" id="capturesDisplay"></div>
+        </div>
+      </aside>
+
+      <!-- ── Board center ──────────────────────────────────────────────────── -->
+      <main class="board-area">
+        <div class="board-container">
+          <!-- Column labels (a–h) -->
+          <div class="coord-labels col-labels">
+            <span>a</span><span>b</span><span>c</span>
+            <span>d</span><span>e</span><span>f</span>
+            <span>g</span><span>h</span>
+          </div>
+          <div class="board-with-rows">
+            <!-- Row labels (8–1) -->
+            <div class="coord-labels row-labels">
+              <span>8</span><span>7</span><span>6</span>
+              <span>5</span><span>4</span><span>3</span>
+              <span>2</span><span>1</span>
+            </div>
+            <div class="checkers-board" id="checkersBoard"></div>
+          </div>
+        </div>
+      </main>
+
+      <!-- ── Right sidebar ─────────────────────────────────────────────────── -->
+      <aside class="sidebar sidebar-right">
+        <div class="mode-info" id="modeInfo"></div>
+
+        <div class="rules-panel">
+          <div class="rules-label">Rules</div>
+          <ul class="rules-list">
+            <li>Captures are mandatory</li>
+            <li>Multi-jump when available</li>
+            <li>Kings move all directions</li>
+            <li>Reach back rank to crown</li>
+          </ul>
+        </div>
+
+        <button class="btn btn-secondary" id="newGameBtn">New Game</button>
+      </aside>
     </div>
+
+    <!-- ── Game-over overlay ─────────────────────────────────────────────── -->
+    <div class="overlay" id="gameOverOverlay" style="display:none">
+      <div class="result-dialog">
+        <div class="result-emoji" id="resultEmoji">🏆</div>
+        <div class="result-title" id="resultTitle"></div>
+        <div class="result-subtitle" id="resultSubtitle"></div>
+        <div class="result-buttons">
+          <button class="btn btn-primary" id="playAgainBtn">Play Again</button>
+          <button class="btn btn-secondary" id="menuBtn">Menu</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="checkersGame.js"></script>
   </body>
 </html>

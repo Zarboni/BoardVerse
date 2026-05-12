@@ -516,27 +516,26 @@ function setStatus(msg) {
  * Return a random integer strictly between 1 and 6 inclusive.
  * This is all that a standard six-sided die can produce.
  */
+const DICE_FACES = ['', '⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+
 function rollDice() {
   return Math.floor(Math.random() * 6) + 1;
 }
 
-/**
- * Flash random numbers on the dice for a short animation, then settle on
- * `finalValue` and call `callback`.
- */
 function animateDice(finalValue, callback) {
+  diceEl.classList.add('rolling');
   let ticks = 0;
-  const totalTicks = 8;
+  const totalTicks = 10;
   const timer = setInterval(() => {
-    // Show a random 1–6 while "rolling" — never outside that range
-    diceEl.textContent = Math.floor(Math.random() * 6) + 1;
+    diceEl.textContent = DICE_FACES[Math.floor(Math.random() * 6) + 1];
     ticks++;
     if (ticks >= totalTicks) {
       clearInterval(timer);
-      diceEl.textContent = finalValue; // settle on the real result
+      diceEl.textContent = DICE_FACES[finalValue];
+      diceEl.classList.remove('rolling');
       callback();
     }
-  }, 60);
+  }, 55);
 }
 
 /** Handle a dice roll for the current player (human or AI). */
@@ -633,7 +632,7 @@ function restartGame() {
   positions     = new Array(players.length).fill(0);
   currentPlayer = 0;
   gameOver      = false;
-  diceEl.textContent = '?';
+  diceEl.textContent = '🎲';
   winOverlay.classList.add('hidden');
   rollBtn.disabled = false;
   setStatus('Press "Roll Dice" to start!');

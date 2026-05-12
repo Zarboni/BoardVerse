@@ -1,0 +1,653 @@
+/* ── Chess Game Styles — BoardVerse ──────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Poppins', 'Segoe UI', Tahoma, sans-serif;
+  background: #0d1117;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Layout ──────────────────────────────────────────────────────────────── */
+
+.game-wrapper {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* ── Sidebars ─────────────────────────────────────────────────────────────── */
+
+.sidebar {
+  width: 220px;
+  min-width: 180px;
+  max-width: 240px;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+}
+
+.sidebar-right {
+  border-right: none;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.back-btn {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  letter-spacing: 0.03em;
+  transition: color 0.2s;
+  display: inline-block;
+}
+
+.back-btn:hover {
+  color: #ffffff;
+}
+
+.game-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ── Player turn indicator ─────────────────────────────────────────────── */
+
+.player-turn {
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 14px;
+  border-left: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.player-turn.white-turn {
+  border-left-color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.player-turn.black-turn {
+  border-left-color: #555;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* ── Captured pieces ───────────────────────────────────────────────────── */
+
+.captured-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.captured-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.captured-pieces {
+  min-height: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  font-size: 18px;
+  line-height: 1.3;
+  min-height: 28px;
+}
+
+/* ── Move History ─────────────────────────────────────────────────────── */
+
+.move-history-label {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.move-history {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 400px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+.move-history::-webkit-scrollbar {
+  width: 4px;
+}
+
+.move-history::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+}
+
+.move-entry {
+  display: grid;
+  grid-template-columns: 30px 1fr 1fr;
+  gap: 4px;
+  font-size: 12px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.move-entry:nth-child(even) {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.move-num {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 11px;
+}
+
+.move-san {
+  color: rgba(255, 255, 255, 0.85);
+  cursor: default;
+  font-family: 'Courier New', monospace;
+}
+
+/* ── Rules panel ──────────────────────────────────────────────────────────── */
+
+.rules-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rules-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.rules-list {
+  margin: 0;
+  padding: 0 0 0 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.5;
+}
+
+/* ── Buttons ────────────────────────────────────────────────────────────── */
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.btn {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  transition: all 0.2s ease;
+  letter-spacing: 0.02em;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #6c3fd1, #4facde);
+  color: #ffffff;
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.15);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+/* ── Board Area ─────────────────────────────────────────────────────────── */
+
+.board-area {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 0;
+  height: 100%;
+  padding: 8px;
+}
+
+/* Grid: rank-labels left | board right / file-labels below board */
+.board-container {
+  display: grid;
+  grid-template-columns: 24px auto;
+  grid-template-rows: auto 24px;
+}
+
+/* ── Chess Board ────────────────────────────────────────────────────────── */
+
+.chess-board {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  width: min(90vh, calc(100vw - 470px), 840px);
+  aspect-ratio: 1 / 1;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* ── Squares ────────────────────────────────────────────────────────────── */
+
+.square {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.square.light {
+  background: #f0d9b5;
+}
+
+.square.dark {
+  background: #b58863;
+}
+
+/* Selected square */
+.square.selected {
+  outline: 3px solid #f6f669;
+  outline-offset: -3px;
+  z-index: 2;
+}
+
+/* Last move highlight */
+.square.last-move {
+  background-color: rgba(204, 204, 102, 0.5);
+}
+
+.square.last-move.light {
+  background-color: rgba(204, 204, 102, 0.5);
+}
+
+.square.last-move.dark {
+  background-color: rgba(185, 202, 67, 0.55);
+}
+
+/* King in check */
+.square.in-check {
+  background: rgba(255, 0, 0, 0.5) !important;
+}
+
+/* Valid move dot */
+.square.valid-move::after {
+  content: '';
+  position: absolute;
+  width: 30%;
+  height: 30%;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Valid capture ring */
+.square.valid-capture::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 4px solid rgba(0, 0, 0, 0.4);
+  border-radius: 0;
+  box-sizing: border-box;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Pieces ─────────────────────────────────────────────────────────────── */
+
+.piece {
+  font-size: clamp(28px, 5vw, 46px);
+  line-height: 1;
+  user-select: none;
+  z-index: 1;
+  transition: transform 0.1s ease;
+  position: relative;
+}
+
+.piece.white {
+  color: #ffffff;
+  text-shadow:
+    0 0 3px #000000,
+    0 1px 4px rgba(0, 0, 0, 0.8),
+    1px 1px 0 #333,
+    -1px -1px 0 #333;
+}
+
+.piece.black {
+  color: #1a1a1a;
+  text-shadow:
+    0 0 2px rgba(255, 255, 255, 0.3),
+    0 1px 3px rgba(255, 255, 255, 0.2);
+}
+
+.square:hover .piece {
+  transform: scale(1.1);
+}
+
+/* ── Coordinate Labels ─────────────────────────────────────────────────── */
+
+/* Sits in grid col 1, row 1 — stretches to match board height automatically */
+.rank-labels {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 24px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+  user-select: none;
+}
+
+.rank-labels span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+/* Sits in grid col 2, row 2 — width matches board width automatically */
+.file-labels {
+  grid-column: 2;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  height: 24px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  user-select: none;
+  margin-left: 0 !important;
+}
+
+.file-labels span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+/* ── Overlays ───────────────────────────────────────────────────────────── */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  backdrop-filter: blur(4px);
+}
+
+.promotion-dialog,
+.result-dialog {
+  background: #1a1f2e;
+  border-radius: 16px;
+  padding: 32px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  min-width: 280px;
+}
+
+.promo-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.promo-pieces {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.promo-piece-btn {
+  font-size: 48px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1;
+  color: inherit;
+}
+
+.promo-piece-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.result-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.result-subtitle {
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 24px;
+  font-size: 16px;
+}
+
+.result-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* ── THEME: Neon ────────────────────────────────────────────────────────── */
+
+body.theme-neon {
+  background: #050810;
+}
+
+body.theme-neon .square.light {
+  background: #1a2035;
+}
+
+body.theme-neon .square.dark {
+  background: #0d1020;
+}
+
+body.theme-neon .piece.white {
+  color: #00f5ff;
+  text-shadow:
+    0 0 10px #00f5ff,
+    0 0 20px rgba(0, 245, 255, 0.5);
+}
+
+body.theme-neon .piece.black {
+  color: #ff00aa;
+  text-shadow:
+    0 0 10px #ff00aa,
+    0 0 18px rgba(255, 0, 170, 0.5);
+}
+
+body.theme-neon .square.selected {
+  outline-color: #00f5ff;
+  box-shadow: inset 0 0 15px rgba(0, 245, 255, 0.4);
+}
+
+body.theme-neon .square.valid-move::after {
+  background: rgba(0, 245, 255, 0.35);
+}
+
+body.theme-neon .square.valid-capture::after {
+  border-color: rgba(0, 245, 255, 0.5);
+}
+
+body.theme-neon .sidebar {
+  background: rgba(5, 8, 20, 0.95);
+  border-color: rgba(0, 245, 255, 0.2);
+}
+
+body.theme-neon .player-turn {
+  border-left-color: #00f5ff;
+  background: rgba(0, 245, 255, 0.1);
+}
+
+body.theme-neon .chess-board {
+  border-color: rgba(0, 245, 255, 0.3);
+  box-shadow: 0 0 30px rgba(0, 245, 255, 0.15);
+}
+
+body.theme-neon .promotion-dialog,
+body.theme-neon .result-dialog {
+  background: rgba(5, 8, 20, 0.98);
+  border-color: rgba(0, 245, 255, 0.2);
+}
+
+body.theme-neon .btn-primary {
+  background: linear-gradient(135deg, #00f5ff, #ff00aa);
+}
+
+body.theme-neon .last-move.light,
+body.theme-neon .last-move.dark {
+  background: rgba(0, 245, 255, 0.25) !important;
+}
+
+/* ── THEME: Retro ───────────────────────────────────────────────────────── */
+
+body.theme-retro {
+  background: #2c1a0e;
+}
+
+body.theme-retro .square.light {
+  background: #e8d5b7;
+}
+
+body.theme-retro .square.dark {
+  background: #8b5e3c;
+}
+
+body.theme-retro .piece.white {
+  color: #fff8e7;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+body.theme-retro .piece.black {
+  color: #1a0a00;
+  text-shadow: none;
+}
+
+body.theme-retro .sidebar {
+  background: rgba(44, 26, 14, 0.9);
+  border-color: rgba(200, 150, 80, 0.3);
+}
+
+body.theme-retro .chess-board {
+  border-color: #8b5e3c;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+}
+
+body.theme-retro .btn-primary {
+  background: linear-gradient(135deg, #c8964a, #8b5e3c);
+}
+
+body.theme-retro .player-turn {
+  border-left-color: #c8964a;
+  background: rgba(200, 150, 74, 0.15);
+}
+
+body.theme-retro .promotion-dialog,
+body.theme-retro .result-dialog {
+  background: #3d2510;
+  border-color: rgba(200, 150, 80, 0.3);
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+
+@media (max-width: 800px) {
+  .game-wrapper {
+    flex-direction: column;
+    height: auto;
+    overflow-y: auto;
+  }
+
+  .sidebar {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-right: none;
+    border-left: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .sidebar-right {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: none;
+  }
+
+  .board-area {
+    height: auto;
+    padding: 16px;
+  }
+
+  /* At small viewports the sidebars stack, so the board can use full width */
+  .chess-board {
+    width: min(90vw, 88vh, 640px);
+  }
+
+  /* rank-labels height and file-labels width are auto-matched by CSS grid */
+
+  .move-history {
+    max-height: 200px;
+  }
+}
